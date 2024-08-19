@@ -10,6 +10,10 @@ void btn_connect_clicked(GtkButton *btn, gpointer data_user){
     cout<<"clicked"<<endl;
     //gtk_widget_set_visible(GTK_WIDGET(btn), false);
     gtk_widget_set_sensitive(GTK_WIDGET(btn), false); //disable
+
+    //GtkTextBuffer buffer = gtk_text_view_get_buffer((GtkWidget)data_user);
+    //gtk_text_buffer_set_text(buffer, "clicked add text TextView", -1);
+    
 }
 void setup_ping_item(GtkListItemFactory *factory, GtkListItem *list_item) {
     GtkWidget *lb_name = gtk_label_new(nullptr);
@@ -47,8 +51,12 @@ void content_body(GtkWidget *app){
     gtk_entry_set_placeholder_text(GTK_ENTRY(txtHost), "http or https !!");
     GtkWidget *lblPing = gtk_label_new("Ping :");
 
-    GtkWidget *txtMessenger = gtk_text_view_new();
+    GtkTextBuffer* buffer = gtk_text_buffer_new(NULL);
+  
+    GtkWidget *txtMessenger = gtk_text_view_new_with_buffer(buffer);
     GtkWidget *sbMessenger = gtk_scrolled_window_new();
+    
+    gtk_text_buffer_set_text(buffer, "Hello, this is some text", -1);
     GtkWidget *boxMessenger = gtk_box_new(GtkOrientation::GTK_ORIENTATION_VERTICAL, 5);
     gtk_box_append(GTK_BOX(boxMessenger), txtMessenger);
     gtk_widget_set_size_request(sbMessenger,450, 300);
@@ -95,7 +103,7 @@ void content_body(GtkWidget *app){
     gtk_grid_set_column_homogeneous(GTK_GRID(grid), true);
 
     //signal
-    g_signal_connect (btnConnect, "clicked", G_CALLBACK (btn_connect_clicked), NULL);
+    g_signal_connect (btnConnect, "clicked", G_CALLBACK (btn_connect_clicked), txtMessenger);
 
     gtk_window_set_child(GTK_WINDOW(app), grid); //app win main
 }
