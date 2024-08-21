@@ -43,7 +43,7 @@ void activate(GApplication *app, gpointer *data) {
 
 void content_head(GtkWidget *app){
     GtkWidget *head = gtk_header_bar_new();
-    GtkWidget *lblTitle = gtk_label_new("Dev Test Host");
+    GtkWidget *lblTitle = gtk_label_new("Host Dev With GTK4/C++");
     GtkWidget *btnSave = gtk_button_new_with_label("Save");
     //gtk_header_bar_set_show_title_buttons(GTK_HEADER_BAR(head), TRUE);//show title
 
@@ -63,13 +63,17 @@ void content_body(GtkWidget *app){
     GtkWidget *grid = gtk_grid_new();
     gtk_grid_set_column_spacing(GTK_GRID(grid), 5); // border column
     gtk_grid_set_row_spacing(GTK_GRID(grid), 5); // border row
+    gtk_widget_set_margin_top(grid, 10);
     //add child grid
 
     GtkWidget *lblHost = gtk_label_new("Host name :");
+    
     GtkWidget *txtHost = gtk_entry_new();
     gtk_entry_set_placeholder_text(GTK_ENTRY(txtHost), "http or https !!");
     GtkWidget *lblPing = gtk_label_new("Ping :");
 
+    gtk_widget_set_halign(lblHost, GtkAlign::GTK_ALIGN_END);
+    gtk_widget_set_halign(lblPing, GtkAlign::GTK_ALIGN_END);
     GtkTextBuffer* buffer = gtk_text_buffer_new(NULL);
   
     GtkWidget *txtMessenger = gtk_text_view_new_with_buffer(buffer);
