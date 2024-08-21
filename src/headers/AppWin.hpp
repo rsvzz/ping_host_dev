@@ -6,13 +6,15 @@
 using namespace std;
 
 void content_body(GtkWidget *);
-void btn_connect_clicked(GtkButton *btn, gpointer data_user){
-    cout<<"clicked"<<endl;
+void content_head(GtkWidget *);
+void btn_connect_clicked(GtkButton *btn, GtkTextView *data_user){
+    //cout<<"clicked"<<endl;
     //gtk_widget_set_visible(GTK_WIDGET(btn), false);
     gtk_widget_set_sensitive(GTK_WIDGET(btn), false); //disable
-
-    //GtkTextBuffer buffer = gtk_text_view_get_buffer((GtkWidget)data_user);
-    //gtk_text_buffer_set_text(buffer, "clicked add text TextView", -1);
+    //gtk_text_view_set_editable(GTK_TEXT_VIEW(txtMessenger), false);
+    //GtkTextView tview =  GTK_TEXT_VIEW(data_user);
+    GtkTextBuffer *buffer = gtk_text_view_get_buffer(data_user);
+    gtk_text_buffer_set_text(buffer, "clicked add text TextView", -1);
     
 }
 void setup_ping_item(GtkListItemFactory *factory, GtkListItem *list_item) {
@@ -33,11 +35,28 @@ void activate(GApplication *app, gpointer *data) {
     gtk_window_set_title(GTK_WINDOW(win), "Ping Host Dev With GTK4/C++");
     gtk_window_set_resizable(GTK_WINDOW(win), false); // no maximize
     gtk_window_set_default_size(GTK_WINDOW(win), 500, 400);
+    content_head(win);
     content_body(win); //create body content
     gtk_window_present(GTK_WINDOW(win));
     
 }
 
+void content_head(GtkWidget *app){
+    GtkWidget *head = gtk_header_bar_new();
+    GtkWidget *lblTitle = gtk_label_new("Dev Test Host");
+    GtkWidget *btnSave = gtk_button_new_with_label("Save");
+    //gtk_header_bar_set_show_title_buttons(GTK_HEADER_BAR(head), TRUE);//show title
+
+    gtk_header_bar_set_title_widget(GTK_HEADER_BAR(head), lblTitle );
+    GtkWidget *image = gtk_image_new_from_file("image/menu.png");
+    gtk_button_set_child(GTK_BUTTON(btnSave), image);
+    gtk_widget_set_size_request(btnSave, 50, 50);
+    gtk_header_bar_pack_start(GTK_HEADER_BAR(head), btnSave);
+    //gtk_header_bar_pack_start(GTK_HEADER_BAR(head), image);
+   
+    gtk_window_set_titlebar(GTK_WINDOW(app), head);
+
+}
 
 void content_body(GtkWidget *app){
     //add grid
@@ -103,7 +122,7 @@ void content_body(GtkWidget *app){
     gtk_grid_set_column_homogeneous(GTK_GRID(grid), true);
 
     //signal
-    g_signal_connect (btnConnect, "clicked", G_CALLBACK (btn_connect_clicked), txtMessenger);
+    g_signal_connect (btnConnect, "clicked", G_CALLBACK (btn_connect_clicked), GTK_TEXT_VIEW(txtMessenger));
 
     gtk_window_set_child(GTK_WINDOW(app), grid); //app win main
 }
