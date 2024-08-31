@@ -5,16 +5,38 @@
 #include "model_struct.hpp"
 using namespace std;
 
+struct HostItem{
+    GtkDropDown *ping;
+    GtkEntry *host;
+    GtkTextView *gtkTextView;
+};
+
 void content_body(GtkWidget *);
 void content_head(GtkWidget *);
-void btn_connect_clicked(GtkButton *btn, GtkTextView *data_user){
+void btn_connect_clicked(GtkButton *btn, HostItem *data_user){
     //cout<<"clicked"<<endl;
     //gtk_widget_set_visible(GTK_WIDGET(btn), false);
-    gtk_widget_set_sensitive(GTK_WIDGET(btn), false); //disable
+    const char *btnText = gtk_button_get_label(btn);
+    if(strcmp(btnText,"Start") == 0){
+        gtk_button_set_label(btn, "Stop");
+        gtk_widget_set_sensitive(GTK_WIDGET(data_user->host), false);
+        gtk_widget_set_sensitive(GTK_WIDGET(data_user->ping), false);
+    //gtk_widget_set_sensitive(GTK_WIDGET(btn), false); //disable
     //gtk_text_view_set_editable(GTK_TEXT_VIEW(txtMessenger), false);
     //GtkTextView tview =  GTK_TEXT_VIEW(data_user);
-    GtkTextBuffer *buffer = gtk_text_view_get_buffer(data_user);
+    GtkEntryBuffer *host_b = gtk_entry_get_buffer(data_user->host);
+    PingItem *item =(PingItem*)gtk_drop_down_get_selected_item(data_user->ping);
+    const char *text_host = gtk_entry_buffer_get_text(host_b);
+    cout<<text_host<<" Select:"<<item->value<<endl;
+    GtkTextBuffer *buffer = gtk_text_view_get_buffer(data_user->gtkTextView);
     gtk_text_buffer_set_text(buffer, "clicked add text TextView", -1);
+    }
+    else{
+        gtk_button_set_label(btn, "Start");
+        gtk_widget_set_sensitive(GTK_WIDGET(data_user->host), true);
+        gtk_widget_set_sensitive(GTK_WIDGET(data_user->ping), true);
+    }
+    
     
 }
 void setup_ping_item(GtkListItemFactory *factory, GtkListItem *list_item) {
@@ -125,8 +147,12 @@ void content_body(GtkWidget *app){
     gtk_widget_set_halign(grid, GtkAlign::GTK_ALIGN_CENTER);
     gtk_grid_set_column_homogeneous(GTK_GRID(grid), true);
 
+    HostItem *item = new HostItem;
+    item->host = GTK_ENTRY(txtHost);
+    item->ping = GTK_DROP_DOWN(ddlPing);
+    item->gtkTextView = GTK_TEXT_VIEW(txtMessenger);
     //signal
-    g_signal_connect (btnConnect, "clicked", G_CALLBACK (btn_connect_clicked), GTK_TEXT_VIEW(txtMessenger));
+    g_signal_connect (btnConnect, "clicked", G_CALLBACK (btn_connect_clicked), item);
 
     gtk_window_set_child(GTK_WINDOW(app), grid); //app win main
 }
