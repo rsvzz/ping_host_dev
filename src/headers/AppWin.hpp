@@ -13,6 +13,16 @@ struct HostItem{
 
 void content_body(GtkWidget *);
 void content_head(GtkWidget *);
+void btn_open_clicked(GtkButton *btn, HostItem *data_user)
+{
+    GtkEntryBuffer *host_b = gtk_entry_get_buffer(data_user->host);
+    PingItem *item =(PingItem*)gtk_drop_down_get_selected_item(data_user->ping);
+    const char *text_host = gtk_entry_buffer_get_text(host_b);
+    cout<<text_host<<" Select:"<<item->value<<endl;
+}
+void btn_save_clicked(GtkButton *btn, HostItem *data_user){
+    
+}
 void btn_connect_clicked(GtkButton *btn, HostItem *data_user){
     //cout<<"clicked"<<endl;
     //gtk_widget_set_visible(GTK_WIDGET(btn), false);
@@ -58,6 +68,7 @@ void activate(GApplication *app, gpointer *data) {
     gtk_window_set_resizable(GTK_WINDOW(win), false); // no maximize
     gtk_window_set_default_size(GTK_WINDOW(win), 500, 400);
     content_head(win);
+    
     content_body(win); //create body content
     gtk_window_present(GTK_WINDOW(win));
     
@@ -66,14 +77,21 @@ void activate(GApplication *app, gpointer *data) {
 void content_head(GtkWidget *app){
     GtkWidget *head = gtk_header_bar_new();
     GtkWidget *lblTitle = gtk_label_new("Host Dev With GTK4/C++");
-    GtkWidget *btnSave = gtk_button_new_with_label("Save");
+    GtkWidget *btnSave = gtk_button_new();
+    GtkWidget *btnOpen = gtk_button_new();
+    gtk_button_set_icon_name(GTK_BUTTON(btnSave), "document-save-symbolic");
+    gtk_button_set_icon_name(GTK_BUTTON(btnOpen), "document-open-symbolic");
     //gtk_header_bar_set_show_title_buttons(GTK_HEADER_BAR(head), TRUE);//show title
 
     gtk_header_bar_set_title_widget(GTK_HEADER_BAR(head), lblTitle );
-    GtkWidget *image = gtk_image_new_from_file("image/menu.png");
-    gtk_button_set_child(GTK_BUTTON(btnSave), image);
-    gtk_widget_set_size_request(btnSave, 50, 50);
+   // GtkWidget *image = gtk_image_new_from_icon_name("applications-system-symbolic"); //gtk_image_new_from_file("image/menu.png");
+    //gtk_button_set_icon_name(GTK_BUTTON(image), "applications-system-symbolic");
+
+   // gtk_button_set_child(GTK_IMAGE(btnSave), image);
+    //gtk_widget_set_size_request(btnSave, 50, 50);
     gtk_header_bar_pack_start(GTK_HEADER_BAR(head), btnSave);
+    gtk_header_bar_pack_end(GTK_HEADER_BAR(head), btnOpen);
+
     //gtk_header_bar_pack_start(GTK_HEADER_BAR(head), image);
    
     gtk_window_set_titlebar(GTK_WINDOW(app), head);
@@ -138,7 +156,7 @@ void content_body(GtkWidget *app){
     gtk_grid_attach(GTK_GRID(grid), lblHost, 0, 0, 1, 1); // w h cw rh
     gtk_grid_attach(GTK_GRID(grid), txtHost, 1, 0, 3, 1);
     gtk_grid_attach(GTK_GRID(grid), lblPing, 0, 1, 1, 1);
-    gtk_grid_attach(GTK_GRID(grid), ddlPing, 1, 1, 2, 1);
+    gtk_grid_attach(GTK_GRID(grid), ddlPing, 1, 1, 1, 1);
     gtk_grid_attach(GTK_GRID(grid), btnConnect, 3, 1, 1, 1);
     gtk_grid_attach(GTK_GRID(grid), sbMessenger, 0, 2, 4, 1);
 
@@ -151,6 +169,9 @@ void content_body(GtkWidget *app){
     item->host = GTK_ENTRY(txtHost);
     item->ping = GTK_DROP_DOWN(ddlPing);
     item->gtkTextView = GTK_TEXT_VIEW(txtMessenger);
+    
+    //g_signal_connect (btnOpen, "clicked", G_CALLBACK (btn_open_clicked), item);
+    //g_signal_connect (btnSave, "clicked", G_CALLBACK (btn_save_clicked), item);
     //signal
     g_signal_connect (btnConnect, "clicked", G_CALLBACK (btn_connect_clicked), item);
 
