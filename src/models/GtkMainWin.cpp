@@ -1,15 +1,31 @@
 #include <iostream>
-#include "../headers/GtkMainWin.hpp"
+#include "../../inc/GtkMainWin.hpp"
 using namespace std;
 
     Glib::RefPtr<ItemList> GtkMainWin::create_item(int value, const char *name) {
         return Glib::make_refptr_for_instance<ItemList>(new ItemList(value, name));
     }
-//DropDown
     void GtkMainWin::on_clicked_start(){
-        cout<<"Click"<<endl;
-        txtHost->set_sensitive(false);
-    }
+        
+        bool status = false;
+        if(strcmp(btnStart->get_icon_name().c_str(), "mail-send-receive-symbolic") == 0){
+            btnStart->set_icon_name("system-reboot-symbolic");
+            txtHost->set_sensitive(status);
+            ddlPing->set_sensitive(status);
+            //Exec ping server
+            auto buffer = txtRequest->get_buffer();
+            buffer->set_text("Hi!! This is test\n This is new line");
+            txtRequest->set_buffer(buffer);
+        }
+        else{
+            btnStart->set_icon_name("mail-send-receive-symbolic");
+            status = true;
+            btnStart->set_sensitive(status);
+            ddlPing->set_sensitive(status);
+            txtHost->set_sensitive(status);
+        }
+        
+    };
 
     void GtkMainWin::on_clicked_option(){
         cout<<"Click"<<endl;
@@ -46,8 +62,9 @@ GtkMainWin::GtkMainWin()
     this->set_resizable(false);
     set_default_size(400,400);
     //btnButton("Clicked me!");
-    btnButton =  new Gtk::Button("Clicked Me!!");
     mbOption =  new Gtk::MenuButton();
+    btnStart = new Gtk::Button("Start");
+    btnStart->set_icon_name("mail-send-receive-symbolic");
     //mbOption->set_always_show_arrow(true);
     //mbOption->set_label("File");
     /*
@@ -91,15 +108,15 @@ GtkMainWin::GtkMainWin()
         
         //app_menu->add_action("config", sigc::mem_fun(*this, &GtkMainWin::on_save_menu));
 
-        
+        /*
         Gtk::PopoverMenu *popover_menu = new Gtk::PopoverMenu(menu);
         popover_menu->set_margin(10);
         //popover_menu.set_menu_model(menu);
-        //popover_menu.set_has_arrow(false);
+        popover_menu->set_has_arrow(true);
         
-        mbOption->set_popover(*popover_menu);
+        mbOption->set_popover(*popover_menu);*/
         
-        //mbOption->set_menu_model(menu);
+        mbOption->set_menu_model(menu);
 
         headerbar->pack_end(*mbOption);
     
@@ -128,8 +145,7 @@ GtkMainWin::GtkMainWin()
     ddlPing->set_model(model);
     ddlPing->set_factory(factory);
     
-    btnStart = new Gtk::Button("Start");
-    btnStart->set_icon_name("mail-send-receive-symbolic");
+    
     btnStart->signal_clicked().connect(sigc::mem_fun(*this, &GtkMainWin::on_clicked_start));
     //mbOption->signal_show().connect(sigc::mem_fun(*this, &GtkMainWin::on_clicked_option));
     lblHost->set_size_request(100, 30);

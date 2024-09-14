@@ -2,8 +2,11 @@
 //#include "headers/Application.hpp"
 //#include "headers/CurlClient.hpp"
 //#include "headers/HostClient.hpp"
-#include "headers/GtkMainWin.hpp"
+#include "../inc/GtkMainWin.hpp"
 #include <gtkmm-4.0/gtkmm/application.h>
+#include <glibmm-2.68/glibmm.h>
+#include <iostream>
+using namespace std;
 /*#include <gtkmm-4.0/gtkmm/window.h>
 
 
@@ -28,6 +31,7 @@ void Activate(GApplication *app, gpointer *data){
 
 int main(int argc, char* argv[])
 {
+    cout<<"Ok"<<endl;
   auto app = Gtk::Application::create("org.gtkmm.examples.base");
   return app->make_window_and_run<GtkMainWin>(argc, argv);
 }
