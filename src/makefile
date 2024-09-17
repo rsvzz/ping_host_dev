@@ -7,7 +7,9 @@ MODEL = models
 LIBS = `pkg-config --cflags --libs gtkmm-4.0`
 OBJS = $(OBJ_DIR)/GtkMainWin.o #Todos lsos modelos
 
-all : $(OBJS) $(OBJ_DIR)/main.o #porq no se puede dentro de otra carpeta.
+all : target
+
+target: $(OBJS) $(OBJ_DIR)/main.o #porq no se puede dentro de otra carpeta.
 	@mkdir $(BIN_DIR) -p
 	g++ -o $(EXEC) $(OBJS) $(OBJ_DIR)/main.o $(LIBS) $(CFLAGS)
 
