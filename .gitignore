@@ -1,4 +1,4 @@
-/.vscode
+.vscode/
 [.exe]
-/bin
-/obj
+bin/
+obj/
