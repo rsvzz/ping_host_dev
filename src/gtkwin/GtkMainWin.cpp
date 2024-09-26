@@ -1,5 +1,5 @@
 #include <iostream>
-#include "../../inc/GtkMainWin.hpp"
+#include "GtkMainWin.hpp"
 using namespace std;
 
     Glib::RefPtr<ItemList> GtkMainWin::create_item(int value, const char *name) {
@@ -12,9 +12,11 @@ using namespace std;
             btnStart->set_icon_name("system-reboot-symbolic");
             txtHost->set_sensitive(status);
             ddlPing->set_sensitive(status);
+
+            auto item = dynamic_pointer_cast<ItemList>(ddlPing->get_selected_item());
             //Exec ping server
             auto buffer = txtRequest->get_buffer();
-            buffer->set_text("Hi!! This is test\n This is new line");
+            buffer->set_text(item->get_name());
             txtRequest->set_buffer(buffer);
         }
         else{
@@ -74,8 +76,10 @@ GtkMainWin::GtkMainWin()
     mbOption->set_child(lbl_Save);
     */
     headerbar =  new Gtk::HeaderBar();
+    //headerbar->set_size_request(-1, 30);
     txtRequest = new Gtk::TextView();
     fm_frame = new Gtk::Frame("Option Dev Host");
+    
     auto box = new Gtk::Box(Gtk::Orientation::HORIZONTAL, 5);
     auto scroll = new Gtk::ScrolledWindow();
     scroll->set_child(*box);

@@ -2,9 +2,8 @@
 //#include "headers/Application.hpp"
 //#include "headers/CurlClient.hpp"
 //#include "headers/HostClient.hpp"
-#include "../inc/GtkMainWin.hpp"
-#include <gtkmm-4.0/gtkmm/application.h>
-#include <glibmm-2.68/glibmm.h>
+#include "gtkwin/GtkMainWin.hpp"
+#include <gtkmm-4.0/gtkmm.h>
 #include <iostream>
 using namespace std;
 /*#include <gtkmm-4.0/gtkmm/window.h>
