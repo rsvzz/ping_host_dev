@@ -16,15 +16,20 @@ using namespace std;
             auto item = dynamic_pointer_cast<ItemList>(ddlPing->get_selected_item());
             //Exec ping server
             auto buffer = txtRequest->get_buffer();
-            buffer->set_text(item->get_name());
+            
+            buffer->set_text(list->get_item_all());
             txtRequest->set_buffer(buffer);
         }
-        else{
+        else
+        {
             btnStart->set_icon_name("mail-send-receive-symbolic");
             status = true;
             btnStart->set_sensitive(status);
             ddlPing->set_sensitive(status);
             txtHost->set_sensitive(status);
+            //RequestItem item = {5, 204, "Hello :)"};
+            //list->add(&item);
+            list->clear_all_item();
         }
         
     };
@@ -63,6 +68,14 @@ GtkMainWin::GtkMainWin()
     //set_title("Ping Host dev GTK4/C++ ");
     this->set_resizable(false);
     set_default_size(400,400);
+    //manejador request test
+    list = new RequestList;
+    RequestItem item1 = {1, 200, "Correcto"};
+    RequestItem item2 = {2, 200, "Correcto"};
+    RequestItem item3= {3, 200, "Correcto"};
+    list->add(&item1);
+    list->add(&item2);
+    list->add(&item3);
     //btnButton("Clicked me!");
     mbOption =  new Gtk::MenuButton();
     btnStart = new Gtk::Button("Start");

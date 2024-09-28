@@ -1,8 +1,10 @@
 #include "RequestList.hpp"
 #include <stack>
-RequestList::RequestList(/* args */)
+#include <iostream>
+using namespace std;
+RequestList::RequestList()
 {
-    top = new stack<int>;
+    top = new stack<RequestItem>;
 }
 
 RequestList::~RequestList()
@@ -10,14 +12,28 @@ RequestList::~RequestList()
     delete top;
 }
 
-void RequestList::add(int item){
-    top->push(item);
+void RequestList::add(RequestItem *item){
+    top->push(*item);
 }
 
-char *RequestList::get_item_all(){
+string RequestList::get_item_all(){
+    stack<RequestItem> aux = *top;
+    string str = "START CONNECTION SERVER\n";
+    while(!aux.empty()){
+        str += messenger_request_item(&aux.top());
+        aux.pop();
+    }
+    return str;
+}
 
-    while(top->empty()){
+string RequestList::messenger_request_item(RequestItem *item){
+    return to_string(item->id) +" -- " + to_string(item->code) + " = " + item->messenger + "\n";
+}
+
+void RequestList::clear_all_item(){
+    while (!top->empty())
+    {
         top->pop();
     }
-    return "";
+    
 }

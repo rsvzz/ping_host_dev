@@ -1,17 +1,28 @@
 #pragma once
 #include <stack>
+#include <iostream>
+
 using namespace std;
+
+struct RequestItem{
+    int id;
+    int code;
+    const char* messenger;
+};
 
 class RequestList
 {
 private:
     /* data */
-    stack<int> *top;
+    stack<RequestItem> *top;
+    string messenger_request_item(RequestItem*);
 public:
     RequestList(/* args */);
     ~RequestList();
-    char *get_item_all();
-    void add(int);
+    string get_item_all();
+    void add(RequestItem*);
+    void clear_all_item();
+
 };
 
 

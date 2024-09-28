@@ -31,8 +31,8 @@ void Activate(GApplication *app, gpointer *data){
 int main(int argc, char* argv[])
 {
     cout<<"Ok"<<endl;
-  auto app = Gtk::Application::create("org.gtkmm.examples.base");
-  return app->make_window_and_run<GtkMainWin>(argc, argv);
+    auto app = Gtk::Application::create("org.gtkmm.examples.base");
+    return app->make_window_and_run<GtkMainWin>(argc, argv);
 }
 /*
 int main(int argc, char *args[]) {

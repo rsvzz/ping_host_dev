@@ -2,9 +2,10 @@ OBJ_DIR = ../obj
 OBJGTK_DIR = ../objgtk
 BIN_DIR = ../bin
 INC_DIR = gtkwin
-CFLAGS = -Wall -g -I$(INC_DIR)
-EXEC = $(BIN_DIR)/app
 MODEL = models
+CFLAGS = -Wall -g -I$(INC_DIR)$(MODEL)
+EXEC = $(BIN_DIR)/app
+
 GTKWIN = gtkwin
 LIBS = `pkg-config --cflags --libs gtkmm-4.0`
 OBJGTK = $(OBJGTK_DIR)/GtkMainWin.o #TODOS LOS MODELS QUE INCLUYAN GTK
@@ -35,3 +36,6 @@ clean :
 	rm -r ../obj
 	rm -r ../objgtk
 	rm -r ../bin
+
+exe :
+	./../bin/app

@@ -1,5 +1,5 @@
 #pragma once
-
+#include "../models/RequestList.hpp"
 #include <gtkmm-4.0/gtkmm.h>
 #include <giomm-2.68/giomm.h>
 #include <glibmm-2.68/glibmm.h>
@@ -27,6 +27,8 @@ class GtkMainWin : public Gtk::Window
 {
 private:
     /* data */
+    //listRequest messager servidor
+    RequestList *list;
     Gtk::MenuButton *mbOption;
     Gtk::HeaderBar *headerbar;
     Gtk::Grid *grid;
