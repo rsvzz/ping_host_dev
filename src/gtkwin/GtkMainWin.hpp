@@ -1,5 +1,7 @@
 #pragma once
 #include "../models/RequestList.hpp"
+#include "../models/ClientRequest.hpp"
+#include "../models/RequestStart.hpp"
 #include <gtkmm-4.0/gtkmm.h>
 #include <giomm-2.68/giomm.h>
 #include <glibmm-2.68/glibmm.h>
@@ -27,8 +29,7 @@ class GtkMainWin : public Gtk::Window
 {
 private:
     /* data */
-    //listRequest messager servidor
-    RequestList *list;
+    ClientRequest *http;
     Gtk::MenuButton *mbOption;
     Gtk::HeaderBar *headerbar;
     Gtk::Grid *grid;
@@ -39,13 +40,16 @@ private:
     Gtk::Button *btnStart;
     Gtk::Frame *fm_frame;
     Gtk::TextView *txtRequest;
+    /// @brief onclickedstart aparte
+    /// @param  
+    void OnBtnStart(ClientRequest*);
     /// @brief Create obj ItemList
     /// @param value key
     /// @param name  Display name
     /// @return 
     Glib::RefPtr<ItemList> create_item(int value, const char *name);
     /// @brief Start connect host remote
-    void on_clicked_start();
+    void on_clicked_start(ClientRequest*);
 
     void on_clicked_option();
     /// @brief Create object factory

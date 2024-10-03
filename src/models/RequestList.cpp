@@ -37,3 +37,8 @@ void RequestList::clear_all_item(){
     }
     
 }
+/// @brief stack obj all
+/// @return copy valor
+stack<RequestItem> RequestList::get_stack_obj(){
+    return *top;
+}

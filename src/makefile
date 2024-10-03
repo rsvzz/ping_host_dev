@@ -1,41 +1,51 @@
 OBJ_DIR = ../obj
 OBJGTK_DIR = ../objgtk
+OBJCURL_DIR = ../objcurl
 BIN_DIR = ../bin
+#---------------------- folder
 INC_DIR = gtkwin
 MODEL = models
-CFLAGS = -Wall -g -I$(INC_DIR)$(MODEL)
-EXEC = $(BIN_DIR)/app
-
+CURL = objlcurl
 GTKWIN = gtkwin
-LIBS = `pkg-config --cflags --libs gtkmm-4.0`
+
+CFLAGS = -Wall -g -I$(INC_DIR)$(MODEL)$(CURL)
+EXEC = $(BIN_DIR)/app
+LIBSGTK = `pkg-config --cflags --libs gtkmm-4.0`
+LIBCURL = -lcurl
+OBJCURL = $(OBJCURL_DIR)/HttpRequestCurl.o #-lcurl
 OBJGTK = $(OBJGTK_DIR)/GtkMainWin.o #TODOS LOS MODELS QUE INCLUYAN GTK
-OBJS = $(OBJ_DIR)/RequestList.o #Todos lsos modelos SIN LIBRERIAS EXTRAS
+OBJS = $(OBJ_DIR)/RequestList.o $(OBJ_DIR)/ClientRequest.o $(OBJ_DIR)/RequestStart.o  #Todos lsos modelos SIN LIBRERIAS EXTRAS
+	
 
 all : target
 
-target: $(OBJS) $(OBJGTK) $(OBJGTK_DIR)/main.o #porq no se puede dentro de otra carpeta.
+target: $(OBJCURL) $(OBJS) $(OBJGTK) $(OBJGTK_DIR)/main.o #porq no se puede dentro de otra carpeta.
 	@mkdir $(BIN_DIR) -p
-	g++ -o $(EXEC) $(OBJS) $(OBJGTK) $(OBJGTK_DIR)/main.o $(LIBS) $(CFLAGS)
+	g++ -o $(EXEC) $(OBJCURL) $(OBJS) $(OBJGTK) $(OBJGTK_DIR)/main.o $(LIBSGTK) $(LIBCURL) $(CFLAGS)
 
 $(OBJGTK_DIR)/main.o : main.cpp
-	g++ -c main.cpp -o $(OBJGTK_DIR)/main.o $(LIBS) $(CFLAGS)
+	g++ -c $? -o $@ $(LIBSGTK) $(CFLAGS)
 
-$(OBJGTK_DIR)/%.o : $(GTKWIN)/*.cpp
+$(OBJGTK_DIR)/%.o : $(GTKWIN)/%.cpp
 	@mkdir $(OBJGTK_DIR) -p
-	g++ -c $< -o $@ $(LIBS)
+	g++ -c $? -o $@ $(LIBSGTK)
+
+$(OBJCURL_DIR)/%.o : $(CURL)/%.cpp
+	@mkdir $(OBJCURL_DIR) -p
+	g++ -c $? -o $@ $(LIBCURL) $(CFLAGS)
 	
-$(OBJ_DIR)/%.o : $(MODEL)/*.cpp
+$(OBJ_DIR)/%.o : $(MODEL)/%.cpp
 	@mkdir $(OBJ_DIR) -p
-	g++ -c $< -o $@ 
-
-
+	g++ -c $? -o $@ 
 
 clean :
 	rm -f $(OBJ_DIR)/*.o
 	rm -f $(OBJGTK_DIR)/*.o
+	rm -f $(OBJCURL_DIR)/*.o
 	rm -r ../obj
 	rm -r ../objgtk
 	rm -r ../bin
+	rm -r ../objcurl
 
 exe :
 	./../bin/app
