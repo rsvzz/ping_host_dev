@@ -9,6 +9,9 @@ set(CMAKE_CXX_STANDARD 17)
 #
 set(GTKMM_INCLUDE_DIRS "/usr/include")
 set(GTKMM_LIBRARY_DIRS "/usr/lib/x86_64-linux-gnu")
+#set(CURL_INCLUDE_DIRS "/usr/include/x86_64-linux-gnu")
+#set(CURL_LIBRARY_DIRS "libcurl")
+set(GTKMM_INCLUDE_DIRS "/usr/lib/x86_64-linux-gnu")
 set(PKG_CONFIG_PATH "/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/share/pkgconfig")
 #
 #set(CMAKE_SYSTEM_NAME Window)
@@ -17,12 +20,11 @@ set(PKG_CONFIG_PATH "/usr/lib/x86_64-linux-gnu/pkgconfig:/usr/share/pkgconfig")
 #set(CMAKE_PREFIX_PATH "C:/msys64/ucrt64/lib/pkgconfig;C:/msys64/ucrt64/share/pkgconfig")
 
 find_package(PkgConfig REQUIRED)
-pkg_check_modules(REQUIRED gtkmm-4.0)
-
-include_directories(${GTKMM_INCLUDE_DIRS})
-link_directories(${GTKMM_LIBRARY_DIRS})
-add_definitions(${GTKMM_CFLAGS_OTHER})
-
-add_executable(app src/main.cpp)
+find_package(CURL REQUIRED)
+pkg_check_modules(GTKMM REQUIRED gtkmm-4.0)
+pkg_check_modules(GLIBMM REQUIRED glibmm-2.68)
+pkg_check_modules(LIBCURL REQUIRED libcurl)
+add_subdirectory(src)
+#add_executable(app src/main.cpp)
 #set_target_properties(app PROPERTIES WIN32_EXECUTABLE true)  # If you dont want console to run with your .exe
-target_link_libraries(app ${GTKMM_LIBRARIES})
+#target_link_libraries(app ${GTKMM_LIBRARIES})
