@@ -1,8 +1,13 @@
 cmake_minimum_required(VERSION 3.5)
 project(PING_HOST_DEV)
+#antes no funciona en app anterios gcc12
+#set(CMAKE_C_STANDARD 11)
+#set(CMAKE_CXX_STANDARD 11)
 
-set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
 #set(GTK4_INCLUDE_DIRS "C:/msys64/mingw64/include")
 #set(GTK4_LIBRARY_DIRS "C:/msys64/mingw64/lib")
 #set(PKG_CONFIG_PATH "C:/msys64/mingw64/lib/pkgconfig:C:/msys64/mingw64/share/pkgconfig")
