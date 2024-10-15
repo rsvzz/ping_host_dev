@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstdio>
 #include "GtkMainWin.hpp"
+#include <gtkmm-4.0/gtkmm/window.h>
 #include <thread>
 using namespace std;
 
@@ -21,7 +22,7 @@ void GtkMainWin::OnBtnStart(ClientRequest *client)
 
     udata.host_name = host_name;
     udata.ping_rq_count = item->get_value();
-    printf("H: %s P: %d \n", udata.host_name, udata.ping_rq_count);
+    //printf("H: %s P: %d \n", udata.host_name, udata.ping_rq_count);
     RequestStart exe;
     string data = exe.exec_data(&udata, client);
     buffer->set_text(data);

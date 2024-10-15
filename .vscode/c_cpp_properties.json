@@ -5,7 +5,8 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "/usr/include/**",
-                "/usr/lib/x86_64-linux-gnu/**"
+                //"/usr/lib/x86_64-linux-gnu/**", //GNU Linux
+                "/usr/lib/**" //Arch linux no es GNU no incluye las lib en una carpeta aparte.
             ],
             "defines": [],
             "compilerPath": "/usr/bin/g++",

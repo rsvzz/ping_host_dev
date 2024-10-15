@@ -1,7 +1,7 @@
 #pragma once
 #include "../models/RequestList.hpp"
-#include "../models/ClientRequest.hpp"
-#include "../models/RequestStart.hpp"
+#include "ClientRequest.hpp"
+#include "RequestStart.hpp"
 #include <gtkmm-4.0/gtkmm.h>
 #include <giomm-2.68/giomm.h>
 #include <glibmm-2.68/glibmm.h>
