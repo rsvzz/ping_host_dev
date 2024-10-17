@@ -16,6 +16,6 @@ private:
 public:
     ClientRequest();
     ~ClientRequest();
-    void exec_request(ItemHost*,RequestList*);
+    void exec_request(ItemHost*,RequestList*, int);
 };
 

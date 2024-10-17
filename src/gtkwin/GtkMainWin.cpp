@@ -2,6 +2,7 @@
 #include <cstdio>
 #include "GtkMainWin.hpp"
 #include <gtkmm-4.0/gtkmm/window.h>
+#include <gtkmm-4.0/gtkmm/textbuffer.h>
 #include <thread>
 using namespace std;
 
@@ -13,7 +14,7 @@ void GtkMainWin::OnBtnStart(ClientRequest *client)
 {
     auto item = dynamic_pointer_cast<ItemList>(ddlPing->get_selected_item());
     // Exec ping server
-    auto buffer = txtRequest->get_buffer();
+    
     ItemHost udata;
 
     char *host_name = new char[txtHost->get_buffer()->get_text().length() + 1];
@@ -23,10 +24,10 @@ void GtkMainWin::OnBtnStart(ClientRequest *client)
     udata.host_name = host_name;
     udata.ping_rq_count = item->get_value();
     //printf("H: %s P: %d \n", udata.host_name, udata.ping_rq_count);
-    RequestStart exe;
-    string data = exe.exec_data(&udata, client);
-    buffer->set_text(data);
-    txtRequest->set_buffer(buffer);
+    RequestStart exe(txtRequest);
+    exe.exec_data(&udata, client);
+    //buffer->set_text(data);
+    //txtRequest->set_buffer(buffer);
     txtRequest->set_sensitive(true);
     txtHost->set_sensitive(true);
     ddlPing->set_sensitive(true);
@@ -184,9 +185,9 @@ GtkMainWin::GtkMainWin()
     // txtHost->set_text("https://example.com"); //test url
     lblPing = new Gtk::Label("Ping Host:");
     const auto model = Gio::ListStore<ItemList>::create();
-    model->append(create_item(1, "Elemento 1"));
-    model->append(create_item(2, "Elemento 2"));
-    model->append(create_item(3, "Elemento 3"));
+    model->append(create_item(10, "Request 10"));
+    model->append(create_item(20, "Request 20"));
+    model->append(create_item(30, "Request 30"));
 
     auto factory = Gtk::SignalListItemFactory::create();
     factory->signal_setup().connect(sigc::mem_fun(*this, &GtkMainWin::on_setup));

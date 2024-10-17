@@ -1,12 +1,14 @@
 #include "ClientRequest.hpp"
+#include <gtkmm-4.0/gtkmm/textview.h>
 class RequestStart
 {
 private:
     /* data */
+    Gtk::TextView *tv;
 public:
-    RequestStart();
+    RequestStart(Gtk::TextView *);
     ~RequestStart();
-    string exec_data(ItemHost*, ClientRequest*);
+    void exec_data(ItemHost*, ClientRequest*);
 };
 
 

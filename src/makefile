@@ -7,7 +7,10 @@ INC_DIR = gtkwin
 MODEL = models
 CURL = objlcurl
 GTKWIN = gtkwin
-CPPXX = g++ -std=c++17 -O2
+#Release
+#CPPXX = g++ -std=c++17 -O2
+#Debug
+CPPXX = g++ -std=c++17
 
 CFLAGS = -Wall -g -I$(INC_DIR)$(MODEL)$(CURL)
 EXEC = $(BIN_DIR)/app
