@@ -8,9 +8,10 @@ add_definitions(${GTKMM_CFLAGS_OTHER})
 add_subdirectory(models)
 add_subdirectory(objlcurl)
 add_subdirectory(gtkwin)
+add_subdirectory(http)
 add_executable(app main.cpp)
-
-target_link_libraries(app PUBLIC models objlcurl gtkwin)
+#target_compile_definitions(app PRIVATE _HAS_STD_BYTE=0)
+target_link_libraries(app PUBLIC models objlcurl http gtkwin)
 target_link_libraries(app PUBLIC ${GTKMM_LIBRARIES})
 target_link_libraries(app PUBLIC ${CURL_LIBRARIES})
 

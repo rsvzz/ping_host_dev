@@ -1,6 +1,6 @@
 #pragma once
 #include "../models/RequestList.hpp"
-#include "ClientRequest.hpp"
+#include "../http/ClientRequest.hpp"
 #include "RequestStart.hpp"
 #include <gtkmm-4.0/gtkmm.h>
 #include <giomm-2.68/giomm.h>

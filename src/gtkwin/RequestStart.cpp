@@ -1,5 +1,5 @@
 #include "RequestStart.hpp"
-using std::string;
+
 RequestStart::RequestStart(Gtk::TextView *txt)
 {
     tv = txt;

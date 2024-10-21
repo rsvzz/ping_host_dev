@@ -33,7 +33,7 @@ $(OBJGTK_DIR)/main.o : main.cpp
 
 $(OBJGTK_DIR)/%.o : $(GTKWIN)/%.cpp
 	@mkdir $(OBJGTK_DIR) -p
-	$(CPPXX) -c $? -o $@ $(LIBSGTK) $(CFLAGS)
+	$(CPPXX) -c $? -o $@ $(LIBSGTK) $(LIBCURL) $(CFLAGS)
 
 $(OBJCURL_DIR)/%.o : $(CURL)/%.cpp
 	@mkdir $(OBJCURL_DIR) -p
