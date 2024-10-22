@@ -1,10 +1,4 @@
-#include <iostream>
-//#include <cstdio>
-//#include <thread>
-//#include <chrono>
 #include "ClientRequest.hpp"
-
-using namespace std;
 
 ClientRequest::ClientRequest()
 {

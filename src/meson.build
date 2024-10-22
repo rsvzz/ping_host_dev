@@ -18,5 +18,6 @@ executable('phdev',
   sources : src_files,
   dependencies : [gtkmm_dep, glibmm_dep],
   include_directories :[inc, inc_model, inc_obj, inc_gwin, inc_http],
-  link_with : [gtkwin_dep, model_dep, objcurl_dep, http_dep]
+  link_with : [gtkwin_dep, model_dep, objcurl_dep, http_dep],
+  gui_app: true
   )

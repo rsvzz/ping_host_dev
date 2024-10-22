@@ -17,8 +17,8 @@
             "name": "window",
             "includePath": [
                 "${workspaceFolder}/**",
-                "C:/msys64/ucrt64/include/**",
-                "C:/msys64/ucrt64/lib/**"
+                "C:/msys64/ucrt64/include",
+                "C:/msys64/ucrt64/lib"
             ],
             "defines": [
                 "_DEBUG",

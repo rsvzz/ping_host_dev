@@ -10,9 +10,9 @@ CURL = objlcurl
 GTKWIN = gtkwin
 INC_HTTP = http
 #Release
-#CPPXX = g++ -std=c++17 -O2
+#CPPXX = g++ -std=c++17 -O2 # clang working 
 #Debug
-CPPXX = g++ -std=c++17
+CPPXX = clang++ -std=c++17 #clang++ test working
 
 CFLAGS = -Wall -g -I$(INC_DIR)$(MODEL)$(CURL)$(INC_HTTP)
 EXEC = $(BIN_DIR)/app
@@ -20,7 +20,7 @@ LIBSGTK = `pkg-config --cflags --libs gtkmm-4.0`
 LIBCURL = -lcurl
 OBJCURL = $(OBJCURL_DIR)/HttpRequestCurl.o #-lcurl
 OBJHTTP = $(OBJHTTP_DIR)/ClientRequest.o 
-OBJGTK = $(OBJGTK_DIR)/GtkMainWin.o $(OBJGTK_DIR)/RequestStart.o #TODOS LOS MODELS QUE INCLUYAN GTK
+OBJGTK =  $(OBJGTK_DIR)/RequestStart.o $(OBJGTK_DIR)/GtkMainWin.o #TODOS LOS MODELS QUE INCLUYAN GTK
 OBJS = $(OBJ_DIR)/RequestList.o    #Todos lsos modelos SIN LIBRERIAS EXTRAS
 	
 
@@ -32,7 +32,7 @@ target: $(OBJCURL) $(OBJS) $(OBJHTTP) $(OBJGTK) $(OBJGTK_DIR)/main.o #porq no se
 
 
 $(OBJGTK_DIR)/main.o : main.cpp
-	$(CPPXX) -c $? -o $@ $(LIBSGTK) $(CFLAGS)
+	$(CPPXX) -c $? -o $@ $(LIBSGTK) $(LIBCURL) $(CFLAGS)
 
 $(OBJGTK_DIR)/%.o : $(GTKWIN)/%.cpp
 	@mkdir $(OBJGTK_DIR) -p
@@ -44,7 +44,7 @@ $(OBJCURL_DIR)/%.o : $(CURL)/%.cpp
 
 $(OBJHTTP_DIR)/%.o : $(INC_HTTP)/%.cpp
 	@mkdir $(OBJHTTP_DIR) -p
-	$(CPPXX) -c $? -o $@ $(LIBCURL) $(CFLAGS)
+	$(CPPXX) -c $? -o $@ $(CFLAGS)
 	
 $(OBJ_DIR)/%.o : $(MODEL)/%.cpp
 	@mkdir $(OBJ_DIR) -p
@@ -59,6 +59,7 @@ clean :
 	rm -r ../objgtk
 	rm -r ../bin
 	rm -r ../objcurl
+	rm -r ../objhttp
 
 exe :
 	./../bin/app

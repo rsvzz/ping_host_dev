@@ -1,7 +1,8 @@
 #pragma once
-#include <iostream>
-#include "../http/ClientRequest.hpp"
 #include <gtkmm-4.0/gtkmm/textview.h>
+#include "../http/ClientRequest.hpp"
+#include <string>
+
 using namespace std;
 using std::string;
 class RequestStart

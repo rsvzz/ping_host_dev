@@ -1,7 +1,9 @@
-.vscode/
 [.exe]
 bin/
 obj/
 objgtk/
+objhttp/
+objcurl/
 build/
+builddir/
 CMakeFiles/

@@ -18,4 +18,4 @@ target_link_libraries(app PUBLIC ${CURL_LIBRARIES})
 
 
 #target_link_libraries(app PUBLIC objlcurl ${GTKMM_LIBRARIES})
-#set_target_properties(app PROPERTIES WIN32_EXECUTABLE true)  # If you dont want console to run with your .exe
+set_target_properties(app PROPERTIES WIN32_EXECUTABLE true)  # If you dont want console to run with your .exe
