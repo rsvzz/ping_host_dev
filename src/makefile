@@ -54,6 +54,7 @@ clean :
 	rm -f $(OBJ_DIR)/*.o
 	rm -f $(OBJGTK_DIR)/*.o
 	rm -f $(OBJCURL_DIR)/*.o
+	rm -f $(OBJHTTP_DIR)/*.o
 	rm -r ../obj
 	rm -r ../objgtk
 	rm -r ../bin
