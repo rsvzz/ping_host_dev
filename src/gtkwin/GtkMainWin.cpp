@@ -1,8 +1,6 @@
 #include <iostream>
 #include <cstdio>
 #include "GtkMainWin.hpp"
-#include <gtkmm-4.0/gtkmm/window.h>
-#include <gtkmm-4.0/gtkmm/textbuffer.h>
 #include <thread>
 using namespace std;
 
@@ -88,9 +86,61 @@ void GtkMainWin::on_bind(const Glib::RefPtr<Gtk::ListItem> &list_item)
 
 void GtkMainWin::on_open_menu()
 {
+    auto file = Gtk::FileDialog::create();
+    file->set_title("Open File Request");
+
+    file->open([this](const Glib::RefPtr<Gio::AsyncResult>& result){
+         auto file_dialog = dynamic_pointer_cast<Gtk::FileDialog>(result->get_source_object_base());
+         if(file_dialog != nullptr){
+             cout<<file_dialog->open_finish(result)->get_path()<<endl;
+         }
+    });
+
+
+    
 }
+
 void GtkMainWin::on_save_menu()
 {
+    if(txtHost->get_text_length() > 0){
+        char *host_name = new char[txtHost->get_buffer()->get_text().length() + 1];
+        strcpy(host_name, txtHost->get_buffer()->get_text().c_str());
+        auto item = dynamic_pointer_cast<ItemList>(ddlPing->get_selected_item());
+        int req = item->get_value();
+        cout<<host_name<<" "<<req<<endl;
+
+        auto file = Gtk::FileDialog::create();
+    file->set_title("Save File Request");
+        auto filters = Gio::ListStore<Glib::Object>::create();
+        auto filtro = Gtk::FileFilter::create();
+        filtro->add_mime_type("application/json");
+        filtro->set_name("Json File");
+        filters->append(filtro);
+       file->set_filters(filters);
+    file->save([this](const Glib::RefPtr<Gio::AsyncResult>& result){
+        
+         try{
+             auto file_dialog = dynamic_pointer_cast<Gtk::FileDialog>(result->get_source_object_base());
+              auto res = file_dialog->save_finish(result);
+              cout<<res->get_path()<<endl;
+         }
+         catch(Gio::Error ex){
+
+         }
+             
+    });
+    
+    }   
+    else{
+        auto dialog = Gtk::AlertDialog::create();
+        dialog->set_detail("Requiere que rellene los datos.");
+        dialog->set_message("Informacion Requerida");
+        dialog->choose([this](const Glib::RefPtr<Gio::AsyncResult>& result){
+            auto dialog = dynamic_pointer_cast<Gtk::AlertDialog>(result->get_source_object_base());
+            dialog->choose_finish(result);
+
+        });
+    }
 }
 
 GtkMainWin::GtkMainWin()
