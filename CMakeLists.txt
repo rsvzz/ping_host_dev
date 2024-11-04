@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 project(PING_HOST_DEV)
-
+#cmake -DCMAKE_BUILD_TYPE=Release .
 #antes no funciona en app anterios gcc12
 #set(CMAKE_C_STANDARD 11)
 #set(CMAKE_CXX_STANDARD 11)
@@ -27,11 +27,13 @@ set(PKG_CONFIG_PATH "C:/msys64/mingw64/lib/pkgconfig:C:/msys64/mingw64/share/pkg
 #set(CMAKE_C_COMPILER "FILEPATH=C:/msys64/mingw64/bin/gcc")
 #set(CMAKE_PREFIX_PATH "C:/msys64/ucrt64/lib/pkgconfig;C:/msys64/ucrt64/share/pkgconfig")
 
+
 find_package(PkgConfig REQUIRED)
 find_package(CURL REQUIRED)
 pkg_check_modules(GTKMM REQUIRED gtkmm-4.0)
 pkg_check_modules(GLIBMM REQUIRED glibmm-2.68)
 pkg_check_modules(LIBCURL REQUIRED libcurl)
+pkg_check_modules(JSONCPP REQUIRED jsoncpp)
 add_subdirectory(src)
 #add_executable(app src/main.cpp)
 #set_target_properties(app PROPERTIES WIN32_EXECUTABLE true)  # If you dont want console to run with your .exe

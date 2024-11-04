@@ -1,4 +1,4 @@
-#include "HttpRequestCurl.hpp"
+#include "../../inc/curl/HttpRequestCurl.hpp"
 
 HttpRequestCurl::HttpRequestCurl(/* args */)
 {

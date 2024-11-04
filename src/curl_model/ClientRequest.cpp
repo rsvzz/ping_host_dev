@@ -1,4 +1,4 @@
-#include "ClientRequest.hpp"
+#include "../../inc/curl/ClientRequest.hpp"
 
 ClientRequest::ClientRequest()
 {

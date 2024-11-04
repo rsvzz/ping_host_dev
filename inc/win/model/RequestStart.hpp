@@ -1,6 +1,6 @@
 #pragma once
 #include <gtkmm-4.0/gtkmm/textview.h>
-#include "../http/ClientRequest.hpp"
+#include "../curl/ClientRequest.hpp"
 #include <string>
 
 using namespace std;

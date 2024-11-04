@@ -1,6 +1,6 @@
 #include <iostream>
 #include <cstdio>
-#include "GtkMainWin.hpp"
+#include "../../inc/win/GtkMainWin.hpp"
 #include <thread>
 using namespace std;
 
@@ -92,7 +92,25 @@ void GtkMainWin::on_open_menu()
     file->open([this](const Glib::RefPtr<Gio::AsyncResult>& result){
          auto file_dialog = dynamic_pointer_cast<Gtk::FileDialog>(result->get_source_object_base());
          if(file_dialog != nullptr){
-             cout<<file_dialog->open_finish(result)->get_path()<<endl;
+            string path = file_dialog->open_finish(result)->get_path();
+            SaveInfo file(path);
+            auto data = file.get_obj_file();
+            if(data != NULL){
+                cout<<data->host_name<<" json"<<endl;
+                cout<<data->rq_count<<" json"<<endl;
+                txtHost->set_text(data->host_name);
+            }
+            else{
+                cout<<"info null"<<endl;
+            }
+            
+            //txtHost->set_text(data->host_name);
+
+            //cout<<config_file->host_name<<endl;
+            //txtHost->set_text(config_file->host_name);
+            //auto model = ddlPing->get_model();
+            
+        
          }
     });
 
@@ -122,10 +140,16 @@ void GtkMainWin::on_save_menu()
          try{
              auto file_dialog = dynamic_pointer_cast<Gtk::FileDialog>(result->get_source_object_base());
               auto res = file_dialog->save_finish(result);
-              cout<<res->get_path()<<endl;
+              //cout<<res->get_path().c_str()<<endl;
+              SaveInfo file(res->get_path());
+              StFile dato;
+              dato.host_name = txtHost->get_text();
+              dato.rq_count =   dynamic_pointer_cast<ItemList>(ddlPing->get_selected_item())->get_value();
+              file.set_obj_file(&dato);
+    
          }
          catch(Gio::Error ex){
-
+            //cout<<ex.what()<<endl;
          }
              
     });

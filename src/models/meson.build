@@ -1,11 +1,11 @@
-inc_model = include_directories('.')
+inc_src = include_directories('../../inc/model')
 
-model_files = files(['RequestList.cpp'])
+src_files = files(['RequestList.cpp'])
 
 model_dep = static_library(
             'mlib',
-             sources: model_files,
-             include_directories : [inc_model],
+             sources: src_files,
+             include_directories : [inc_src],
              install : false)
 
 

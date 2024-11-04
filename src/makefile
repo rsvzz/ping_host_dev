@@ -2,6 +2,7 @@ OBJ_DIR = ../obj
 OBJGTK_DIR = ../objgtk
 OBJCURL_DIR = ../objcurl
 OBJHTTP_DIR = ../objhttp
+OBJJSON_DIR = ../objjson
 BIN_DIR = ../bin
 #---------------------- folder
 INC_DIR = gtkwin
@@ -9,26 +10,29 @@ MODEL = models
 CURL = objlcurl
 GTKWIN = gtkwin
 INC_HTTP = http
+INC_JSON = jsoncpplib
 #Release
 #CPPXX = g++ -std=c++17 -O2 # clang working 
 #Debug
-CPPXX = clang++ -std=c++17 #clang++ test working
+CPPXX = g++ -std=c++17 #clang++ test working
 
-CFLAGS = -Wall -g -I$(INC_DIR)$(MODEL)$(CURL)$(INC_HTTP)
+CFLAGS = -Wall -g -I$(INC_DIR)$(MODEL)$(CURL)$(INC_HTTP)$(INC_JSON)
 EXEC = $(BIN_DIR)/app
 LIBSGTK = `pkg-config --cflags --libs gtkmm-4.0`
 LIBCURL = -lcurl
+LIBJSON = -ljsoncpp
 OBJCURL = $(OBJCURL_DIR)/HttpRequestCurl.o #-lcurl
 OBJHTTP = $(OBJHTTP_DIR)/ClientRequest.o 
+OBJJSON = $(OBJJSON_DIR)/SaveInfo.o #file info new option
 OBJGTK =  $(OBJGTK_DIR)/RequestStart.o $(OBJGTK_DIR)/GtkMainWin.o #TODOS LOS MODELS QUE INCLUYAN GTK
-OBJS = $(OBJ_DIR)/RequestList.o    #Todos lsos modelos SIN LIBRERIAS EXTRAS
+OBJS = $(OBJ_DIR)/RequestList.o $(OBJ_DIR)/FileAccess.o    #Todos lsos modelos SIN LIBRERIAS EXTRAS
 	
 
 all : target
 
-target: $(OBJCURL) $(OBJS) $(OBJHTTP) $(OBJGTK) $(OBJGTK_DIR)/main.o #porq no se puede dentro de otra carpeta.
+target: $(OBJCURL) $(OBJS) $(OBJHTTP) $(OBJGTK) $(OBJJSON) $(OBJGTK_DIR)/main.o #porq no se puede dentro de otra carpeta.
 	@mkdir $(BIN_DIR) -p
-	$(CPPXX) -o $(EXEC) $(OBJCURL) $(OBJS) $(OBJHTTP) $(OBJGTK) $(OBJGTK_DIR)/main.o $(LIBSGTK) $(LIBCURL) $(CFLAGS)
+	$(CPPXX) -o $(EXEC) $(OBJCURL) $(OBJS) $(OBJHTTP) $(OBJJSON) $(OBJGTK) $(OBJGTK_DIR)/main.o $(LIBSGTK) $(LIBCURL) $(LIBJSON) $(CFLAGS)
 
 
 $(OBJGTK_DIR)/main.o : main.cpp
@@ -36,11 +40,15 @@ $(OBJGTK_DIR)/main.o : main.cpp
 
 $(OBJGTK_DIR)/%.o : $(GTKWIN)/%.cpp
 	@mkdir $(OBJGTK_DIR) -p
-	$(CPPXX) -c $? -o $@ $(LIBSGTK) $(LIBCURL) $(CFLAGS)
+	$(CPPXX) -c $? -o $@ $(LIBSGTK) $(LIBCURL) $(INC_STRUCT)
 
 $(OBJCURL_DIR)/%.o : $(CURL)/%.cpp
 	@mkdir $(OBJCURL_DIR) -p
 	$(CPPXX) -c $? -o $@ $(LIBCURL) 
+
+$(OBJJSON_DIR)/%.o : $(INC_JSON)/%.cpp
+	@mkdir $(OBJJSON_DIR) -p
+	$(CPPXX) -c $? -o $@ $(LIBJSON)
 
 $(OBJHTTP_DIR)/%.o : $(INC_HTTP)/%.cpp
 	@mkdir $(OBJHTTP_DIR) -p
@@ -55,11 +63,13 @@ clean :
 	rm -f $(OBJGTK_DIR)/*.o
 	rm -f $(OBJCURL_DIR)/*.o
 	rm -f $(OBJHTTP_DIR)/*.o
+	rm -f $(OBJJSON_DIR)/*.o
 	rm -r ../obj
 	rm -r ../objgtk
 	rm -r ../bin
 	rm -r ../objcurl
 	rm -r ../objhttp
+	rm -r ../objjson
 
 exe :
 	./../bin/app

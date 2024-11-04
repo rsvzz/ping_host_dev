@@ -1,4 +1,4 @@
-#include "gtkwin/GtkMainWin.hpp"
+#include "../inc/win/GtkMainWin.hpp"
 #include <gtkmm-4.0/gtkmm/application.h>
 #include <iostream>
 using namespace std;

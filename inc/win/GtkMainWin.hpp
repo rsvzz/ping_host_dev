@@ -3,9 +3,11 @@
 #include <giomm-2.68/giomm.h>
 #include <glibmm-2.68/glibmm.h>
 
-#include "RequestStart.hpp"
-#include "../models/RequestList.hpp"
-#include "../http/ClientRequest.hpp"
+#include "model/RequestStart.hpp"
+#include "../model/RequestList.hpp"
+#include "../curl/ClientRequest.hpp"
+#include "../jcpp/SaveInfo.hpp"
+
 class ItemList : public Glib::Object{
     private:
         const char *name;

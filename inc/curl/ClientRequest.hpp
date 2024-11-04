@@ -1,6 +1,6 @@
 #pragma once
-#include "../objlcurl/HttpRequestCurl.hpp"
-#include "../models/RequestList.hpp"
+#include "HttpRequestCurl.hpp"
+#include "../model/RequestList.hpp"
 /// @brief Param for user
 struct ItemHost{
     const char *host_name;
