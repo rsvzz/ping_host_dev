@@ -1,4 +1,4 @@
-#include "FileAccess.hpp"
+#include "../../inc/model/FileAccess.hpp"
 FileAccess::FileAccess(/* args */)
 {
 }
@@ -13,5 +13,5 @@ bool FileAccess::save_file(char *_path, AccessFile _data)
 }
 
 AccessFile FileAccess::get_file_content(char *_path){
-
+    return AccessFile();
 }

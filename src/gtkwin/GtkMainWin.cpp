@@ -149,7 +149,7 @@ void GtkMainWin::on_save_menu()
     
          }
          catch(Gio::Error ex){
-            //cout<<ex.what()<<endl;
+            cout<<ex.what()<<endl;
          }
              
     });
