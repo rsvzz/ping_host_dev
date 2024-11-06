@@ -1,5 +1,7 @@
-project('troping', 'cpp',
-  default_options : ['cpp_std=c++17'])
+project('troping', 
+'cpp',
+ version: '0.1.0', 
+ default_options : ['cpp_std=c++17']
+ )
 
-env = {'CC': 'clang', 'CXX': 'clang++'}
 subdir('src')

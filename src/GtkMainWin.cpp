@@ -1,6 +1,6 @@
 #include <iostream>
 #include <cstdio>
-#include "../../inc/win/GtkMainWin.hpp"
+#include "../inc/win/GtkMainWin.hpp"
 #include <thread>
 using namespace std;
 
