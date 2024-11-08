@@ -1,7 +1,9 @@
 #include <iostream>
 #include <cstdio>
 #include "../inc/win/GtkMainWin.hpp"
+#include <giomm-2.68/giomm/fileinfo.h>
 #include <thread>
+
 using namespace std;
 
 Glib::RefPtr<ItemList> GtkMainWin::create_item(int value, const char *name)
@@ -12,7 +14,7 @@ void GtkMainWin::OnBtnStart(ClientRequest *client)
 {
     auto item = dynamic_pointer_cast<ItemList>(ddlPing->get_selected_item());
     // Exec ping server
-    
+
     ItemHost udata;
 
     char *host_name = new char[txtHost->get_buffer()->get_text().length() + 1];
@@ -21,11 +23,11 @@ void GtkMainWin::OnBtnStart(ClientRequest *client)
 
     udata.host_name = host_name;
     udata.ping_rq_count = item->get_value();
-    //printf("H: %s P: %d \n", udata.host_name, udata.ping_rq_count);
+    // printf("H: %s P: %d \n", udata.host_name, udata.ping_rq_count);
     RequestStart exe(txtRequest);
     exe.exec_data(&udata, client);
-    //buffer->set_text(data);
-    //txtRequest->set_buffer(buffer);
+    // buffer->set_text(data);
+    // txtRequest->set_buffer(buffer);
     txtRequest->set_sensitive(true);
     txtHost->set_sensitive(true);
     ddlPing->set_sensitive(true);
@@ -37,16 +39,16 @@ void GtkMainWin::on_clicked_start(ClientRequest *client)
 {
 
     bool status = false;
-   // if (strcmp(btnStart->get_icon_name().c_str(), "mail-send-receive-symbolic") == 0)
+    // if (strcmp(btnStart->get_icon_name().c_str(), "mail-send-receive-symbolic") == 0)
     // {
-        txtHost->set_sensitive(status);
-        ddlPing->set_sensitive(status);
-        txtRequest->set_sensitive(status);
-        btnStart->set_sensitive(status);
-        btnStart->set_icon_name("system-reboot-symbolic");
-        // auto cl = std::make_shared<ClientRequest*>(client);
-        thread tr(&GtkMainWin::OnBtnStart, this, client);
-        tr.detach();
+    txtHost->set_sensitive(status);
+    ddlPing->set_sensitive(status);
+    txtRequest->set_sensitive(status);
+    btnStart->set_sensitive(status);
+    btnStart->set_icon_name("system-reboot-symbolic");
+    // auto cl = std::make_shared<ClientRequest*>(client);
+    thread tr(&GtkMainWin::OnBtnStart, this, client);
+    tr.detach();
     /*}
     else
     {
@@ -88,82 +90,110 @@ void GtkMainWin::on_open_menu()
 {
     auto file = Gtk::FileDialog::create();
     file->set_title("Open File Request");
+    auto filters = Gio::ListStore<Glib::Object>::create();
+    auto filtro = Gtk::FileFilter::create();
 
-    file->open([this](const Glib::RefPtr<Gio::AsyncResult>& result){
+    filtro->add_mime_type("application/json");
+    filtro->set_name("Json File");
+    filters->append(filtro);
+    file->set_filters(filters);
+
+    file->open([this](const Glib::RefPtr<Gio::AsyncResult> &result)
+               {
          auto file_dialog = dynamic_pointer_cast<Gtk::FileDialog>(result->get_source_object_base());
          if(file_dialog != nullptr){
-            string path = file_dialog->open_finish(result)->get_path();
+            auto res = file_dialog->open_finish(result);
+            auto file_info = dynamic_pointer_cast<Gio::FileInfo>(res->query_info());
+
+            //comparando type file.
+            bool rs = strcmp(file_info->get_content_type().c_str(), "application/json");
+            if(rs == 1){
+                return;
+            }
+            //cout<<"result cp ="<< rs<<endl;
+            //cout<<file_info->get_content_type()<<" bname ="<<res->get_basename()<<endl;
+            string path = res->get_path();
             SaveInfo file(path);
             auto data = file.get_obj_file();
             if(data != NULL){
-                cout<<data->host_name<<" json"<<endl;
-                cout<<data->rq_count<<" json"<<endl;
+                //cout<<data->host_name<<" json"<<endl;
+                //cout<<data->rq_count<<" json"<<endl;
                 txtHost->set_text(data->host_name);
-            }
-            else{
-                cout<<"info null"<<endl;
+                auto ddl_model = ddlPing->get_model();
+                for (size_t i = 0; i < ddl_model->get_n_items(); i++)
+                {
+                    /* code */
+                   int value = dynamic_pointer_cast<ItemList>(ddl_model->get_object(i))->get_value();
+                   if(value == data->rq_count)
+                   {
+                        ddlPing->set_selected(i);
+                        break;
+                   }
+                    
+                }
             }
             
-            //txtHost->set_text(data->host_name);
-
-            //cout<<config_file->host_name<<endl;
-            //txtHost->set_text(config_file->host_name);
-            //auto model = ddlPing->get_model();
-            
-        
-         }
-    });
-
-
-    
+         } });
 }
 
 void GtkMainWin::on_save_menu()
 {
-    if(txtHost->get_text_length() > 0){
+    if (txtHost->get_text_length() > 0)
+    {
         char *host_name = new char[txtHost->get_buffer()->get_text().length() + 1];
         strcpy(host_name, txtHost->get_buffer()->get_text().c_str());
-        auto item = dynamic_pointer_cast<ItemList>(ddlPing->get_selected_item());
-        int req = item->get_value();
-        cout<<host_name<<" "<<req<<endl;
+        //auto item = dynamic_pointer_cast<ItemList>(ddlPing->get_selected_item());
+        //int req = item->get_value();
+        // cout << host_name << " " << req << endl;
 
         auto file = Gtk::FileDialog::create();
-    file->set_title("Save File Request");
+        file->set_title("Save File Request");
         auto filters = Gio::ListStore<Glib::Object>::create();
         auto filtro = Gtk::FileFilter::create();
         filtro->add_mime_type("application/json");
         filtro->set_name("Json File");
         filters->append(filtro);
-       file->set_filters(filters);
-    file->save([this](const Glib::RefPtr<Gio::AsyncResult>& result){
-        
-         try{
-             auto file_dialog = dynamic_pointer_cast<Gtk::FileDialog>(result->get_source_object_base());
-              auto res = file_dialog->save_finish(result);
-              //cout<<res->get_path().c_str()<<endl;
-              SaveInfo file(res->get_path());
-              StFile dato;
-              dato.host_name = txtHost->get_text();
-              dato.rq_count =   dynamic_pointer_cast<ItemList>(ddlPing->get_selected_item())->get_value();
-              file.set_obj_file(&dato);
-    
-         }
-         catch(Gio::Error ex){
-            cout<<ex.what()<<endl;
-         }
-             
-    });
-    
-    }   
-    else{
+        file->set_filters(filters);
+        file->save([this](const Glib::RefPtr<Gio::AsyncResult> &result)
+                   {
+                       try
+                       {
+                           auto file_dialog = dynamic_pointer_cast<Gtk::FileDialog>(result->get_source_object_base());
+                           auto res = file_dialog->save_finish(result);
+                            /*
+                             auto file_info = dynamic_pointer_cast<Gio::FileInfo>(res->query_info());
+                              cout<<"llega"<<endl;
+                             cout<<file_info->get_content_type().c_str()<<endl;
+                            bool rs = strcmp(file_info->get_content_type().c_str(), tf);
+                            
+                            if(rs == 1){
+
+                                return;
+                            }
+                            */
+                           // cout<<res->get_path().c_str()<<endl;
+                            //cout<<"llega"<<endl;
+                           SaveInfo file(res->get_path());
+                           StFile dato;
+                           dato.host_name = txtHost->get_text();
+                           dato.rq_count = dynamic_pointer_cast<ItemList>(ddlPing->get_selected_item())->get_value();
+                           //cout<<"llega"<<endl;
+                           file.set_obj_file(&dato);
+                       }
+                       catch (Gio::Error ex)
+                       {
+                           cout << ex.what() << endl;
+                       } });
+    }
+    else
+    {
         auto dialog = Gtk::AlertDialog::create();
         dialog->set_detail("Requiere que rellene los datos.");
         dialog->set_message("Informacion Requerida");
-        dialog->choose([this](const Glib::RefPtr<Gio::AsyncResult>& result){
-            auto dialog = dynamic_pointer_cast<Gtk::AlertDialog>(result->get_source_object_base());
-            dialog->choose_finish(result);
-
-        });
+        dialog->choose([this](const Glib::RefPtr<Gio::AsyncResult> &result)
+                       {
+                           auto dialog = dynamic_pointer_cast<Gtk::AlertDialog>(result->get_source_object_base());
+                           dialog->choose_finish(result); });
     }
 }
 
