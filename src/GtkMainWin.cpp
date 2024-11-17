@@ -104,12 +104,26 @@ void GtkMainWin::on_open_menu()
          if(file_dialog != nullptr){
             auto res = file_dialog->open_finish(result);
             auto file_info = dynamic_pointer_cast<Gio::FileInfo>(res->query_info());
-
+            //array filter open file
+            const char *type_files[] = {".json", "aplication/json"};
             //comparando type file.
-            bool rs = strcmp(file_info->get_content_type().c_str(), "application/json");
-            if(rs == 1){
+            int array_type = sizeof(type_files) / sizeof(type_files[0]);
+            bool rs;
+            for (size_t i = 0; i < array_type; i++)
+            {
+                rs = strcmp(file_info->get_content_type().c_str(), type_files[i]);
+                
+                if(rs == 1){
+                    break;
+                }
+            }
+
+            if(rs == 0){
                 return;
             }
+            
+             
+            
             //cout<<"result cp ="<< rs<<endl;
             //cout<<file_info->get_content_type()<<" bname ="<<res->get_basename()<<endl;
             string path = res->get_path();
@@ -132,7 +146,6 @@ void GtkMainWin::on_open_menu()
                     
                 }
             }
-            
          } });
 }
 

@@ -9,7 +9,7 @@ CURL_MODEL_DIR = $(BIN)/curlmodel
 GTKWIN_DIR = $(BIN)/win
 
 # Compile name
-CXX = g++
+CXX = g++ -std=c++17
 
 # Path .hpp
 INC = inc
@@ -31,7 +31,7 @@ CFLAGS = -Wall -g -I$(INC_MODEL_DIR)$(INC_CURLMODEL_DIR)$(INC_GTKWIN_DIR)$(INC_G
 #libs
 LIB_GTK = `pkg-config --cflags --libs gtkmm-4.0`
 LIB_CURL = -lcurl
-LIB_JSONCPP = -ljsoncpp
+LIB_JSONCPP =  `pkg-config --cflags --libs jsoncpp`
 
 #path .o files
 

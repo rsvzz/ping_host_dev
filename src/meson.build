@@ -30,9 +30,10 @@ dependencies: [gtkmm_dep, glibmm_dep, curl_dep, jsonc_dep])
 executable('troping',
   sources: 'main.cpp',
   dependencies: [gtkmm_dep, glibmm_dep, curl_dep, jsonc_dep],
-  include_directories: [inc_src], # inc_model, inc_curl, inc_jcpp],
+  include_directories: [inc_src],
    link_with: [
       model_dep, jcpp_dep, curl_model_dep, gtk_model_dep, gtk_win_dep
    ],
   #link_args: ['/SUBSYSTEM:WINDOWS'] #windows,,
 )
+
